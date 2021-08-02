@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import Thoughts from './api/Thoughts';
 import ThoughtCards from './components/ThoughtCards';
 
 const App = () => {
   const [thoughts, setThoughts] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(async () => {
-    try {
-      const { data } = await Thoughts.get('/thoughts');
-      setThoughts(data);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      console.log('Error:- ', err);
+  useEffect(() => {
+    async function fetchThought() {
+      try {
+        const { data } = await Thoughts.get('/thoughts');
+        setThoughts(data);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        console.log('Error:- ', err);
+      }
     }
+
+    fetchThought();
   }, []);
   return (
     <div id="flashcard-app" className="container">
