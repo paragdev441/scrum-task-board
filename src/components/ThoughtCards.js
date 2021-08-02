@@ -6,10 +6,8 @@ const ThoughtCards = ({ data }) => {
   const [newThoughts, setNewThoughts] = useState(
     data.thoughts ? data.thoughts : []
   );
-  console.log('newThoughts', data);
+
   const createCard = ({ name, thought }) => {
-    console.log({ name, thought });
-    console.log('newThoughts', data);
     setNewThoughts([
       { name, thought, id: Math.floor(Math.random() * 100 + 1) },
       ...newThoughts,

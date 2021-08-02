@@ -12,7 +12,6 @@ const App = () => {
       const { data } = await Thoughts.get('/thoughts');
       setThoughts(data);
       setLoading(false);
-      console.log(data, 'data');
     } catch (err) {
       setLoading(false);
       console.log('Error:- ', err);
