@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import Thoughts from './api/Thoughts';
+import ThoughtCards from './components/ThoughtCards';
 
-function App() {
+const App = () => {
+  const [thoughts, setThoughts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(async () => {
+    try {
+      const { data } = await Thoughts.get('/thoughts');
+      setThoughts(data);
+      setLoading(false);
+      console.log(data, 'data');
+    } catch (err) {
+      setLoading(false);
+      console.log('Error:- ', err);
+    }
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="flashcard-app" className="container">
+      {loading ? (
+        <div>Loading...</div>
+      ) : loading === false ? (
+        <ThoughtCards data={{ thoughts }} />
+      ) : (
+        <div>No Data Found</div>
+      )}
     </div>
+    // <Query
+    //   query={gql`
+    //     {
+    //       thoughts {
+    //         id
+    //         name
+    //         thought
+    //       }
+    //     }
+    //   `}
+    // >
+    //   {({ loading, error, data }) => {
+    //     return (
+    //       <div id="flashcard-app" className="container">
+    //         {loading ? (
+    //           <div>Loading...</div>
+    //         ) : (
+    //           <ThoughtCards data={data ? data : []} />
+    //         )}
+    //       </div>
+    //     );
+    //   }}
+    // </Query>
   );
-}
+};
 
 export default App;
